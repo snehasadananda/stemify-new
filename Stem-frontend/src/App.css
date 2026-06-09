@@ -1,0 +1,211 @@
+/* RESET */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+html, body, #root {
+  width: 100% !important;
+  height: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  display: block !important;
+  overflow-x: hidden !important;
+}
+
+body {
+  font-family: "Segoe UI", sans-serif;
+  background: #020617;
+  color: #fff;
+}
+
+/* PAGE FULL SCREEN */
+.page {
+  width: 100%;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* HERO FULL HD FIX */
+.hero {
+  position: relative;
+  width: 100%;
+  height: 100vh;            /* FULL HEIGHT */
+  background-image: url("/stemify-hero.jpg");
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  justify-content: center;  /* CENTER EVERYTHING */
+  align-items: center;
+  padding: 2rem;
+}
+
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.70);
+}
+
+/* CENTER WRAPPER */
+.hero-center {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  max-width: 900px;
+}
+
+/* NEW LOGO STYLE */
+.stemify-logo {
+  width: min(90%, 300px);
+  margin-bottom: 1rem;
+}
+
+/* TAGLINE */
+.tagline {
+  font-size: 1.4rem;
+  margin-bottom: 2rem;
+  color: #e5e7eb;
+}
+
+/* CTA ROW CENTERED */
+.cta-row {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+  flex-wrap: wrap;
+}
+
+/* SMALLER CTA BOXES */
+.small-card {
+  width: 250px;
+  padding: 1.2rem;
+}
+
+/* GLASS BOXES */
+.cta-card {
+  text-decoration: none;
+  background: rgba(15, 23, 42, 0.78);
+  border-radius: 1rem;
+  border: 1px solid rgba(148, 163, 184, 0.5);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(12px);
+  transition: transform 0.3s ease;
+  color: #fff;
+}
+
+.cta-card:hover {
+  transform: translateY(-6px);
+}
+
+.cta-title {
+  font-size: 1.1rem;
+  margin-bottom: 0.6rem;
+  font-weight: 700;
+  color: #facc15;
+}
+
+.cta-text {
+  font-size: 0.95rem;
+  color: #e5e7eb;
+}
+
+/* ROBOT BIGGER + FLOATING */
+.robot-wrapper {
+  position: absolute;
+  right: 40px;
+  bottom: 20px;
+  z-index: 1;
+}
+
+.big-robot {
+  width: 420px !important;     /* BIG ROBOT */
+  animation: floatUpDown 3s ease-in-out infinite;
+}
+
+@keyframes floatUpDown {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-22px); }
+}
+
+/* FOOTER */
+.footer {
+  width: 100%;
+  text-align: center;
+  padding: 1rem;
+  font-size: 0.9rem;
+  background: #0f172a;
+  border-top: 1px solid #1e3a8a;
+}
+
+.footer a {
+  color: #38bdf8;
+  text-decoration: none;
+}
+
+.footer a:hover {
+  text-decoration: underline;
+}
+
+/* MOBILE FIXES */
+@media (max-width: 900px) {
+
+  .hero {
+    height: 100vh;
+    padding: 0 1rem;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+  }
+
+  /* FIX LOGO VISIBILITY */
+  .stemify-logo {
+    width: 220px;
+    max-width: 75%;
+    min-width: 140px;
+    margin: 1rem auto 0.5rem auto;
+    display: block;
+  }
+
+  /* CENTER AREA COLLAPSE */
+  .hero-center {
+    width: 100%;
+    text-align: center;
+    margin-top: 0.5rem;
+    padding-bottom: 100px;   /* create space above robot */
+    z-index: 3;
+  }
+
+  /* CTA cards full width & stacked */
+  .cta-row {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+    align-items: center;
+  }
+
+  .cta-card {
+    width: 90%;
+    padding: 1rem;
+    z-index: 4;              /* above robot */
+  }
+
+  /* ROBOT PERFECT POSITION */
+  .robot-wrapper {
+    position: absolute;
+    bottom: 15px;
+    right: 100px;
+    z-index: 10 !important;  /* always above everything */
+  }
+
+  .robot {
+    width: 120px !important;
+    height: auto;
+    opacity: 1;
+  }
+  .big-robot {
+  width: 300px !important;     /* BIG ROBOT */
+  animation: floatUpDown 3s ease-in-out infinite;
+    }
+}

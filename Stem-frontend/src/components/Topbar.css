@@ -1,0 +1,82 @@
+.chat-topbar {
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1.3rem;
+  color: #f9fafb;
+  position: relative;
+}
+
+/* Hamburger: hidden on desktop, shown on mobile */
+.chat-topbar-hamburger {
+  display: none;
+  background: rgba(15, 23, 42, 0.7);
+  border-radius: 999px;
+  border: 1px solid rgba(148, 163, 184, 0.6);
+  color: #e5e7eb;
+  font-size: 1.2rem;
+  width: 36px;
+  height: 36px;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+/* center logo */
+.chat-topbar-logo-wrap {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.chat-topbar-logo {
+  height: 42px;
+  cursor: pointer;
+}
+
+.chat-topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.chat-topbar-share,
+.chat-topbar-dots {
+  border: none;
+  background: transparent;
+  color: #e5e7eb;
+  cursor: pointer;
+}
+
+.chat-topbar-share {
+  font-size: 0.95rem;
+}
+
+.chat-topbar-dots {
+  font-size: 1.4rem;
+}
+
+/* Desktop: hide hamburger */
+@media (min-width: 900px) {
+  .chat-topbar-hamburger {
+    display: none;
+  }
+}
+
+/* Mobile: show hamburger, optionally hide share text if too small */
+@media (max-width: 899px) {
+  .chat-topbar-hamburger {
+    display: inline-flex;
+  }
+
+  .chat-topbar-logo {
+    height: 34px;
+  }
+
+  @media (max-width: 600px) {
+    .chat-topbar-share {
+      display: none;
+    }
+  }
+}

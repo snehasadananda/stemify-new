@@ -1,0 +1,224 @@
+.chat-sidebar {
+  width: 280px;
+  min-width: 260px;
+  background: linear-gradient(
+    180deg,
+    rgba(15, 23, 42, 0.98),
+    rgba(15, 23, 42, 0.92)
+  );
+  color: #f9fafb;
+  padding: 1rem 1rem 1.2rem;
+  box-shadow: 4px 0 30px rgba(0, 0, 0, 0.6);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  z-index: 20;
+}
+
+/* role title */
+.chat-sidebar-role {
+  font-size: 1.6rem;
+  font-weight: 700;
+  margin-bottom: 0.4rem;
+}
+
+/* block with assignments / students / children */
+.chat-sidebar-role-block {
+  background: radial-gradient(
+    circle at top,
+    rgba(255, 255, 255, 0.08),
+    rgba(15, 23, 42, 0.98)
+  );
+  border-radius: 16px;
+  padding: 0.75rem 0.8rem;
+  border: 1px solid rgba(148, 163, 184, 0.4);
+}
+
+.chat-sidebar-section-label {
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #94a3b8;
+  margin-bottom: 0.35rem;
+}
+
+.chat-sidebar-role-list {
+  max-height: 140px;
+  overflow-y: auto;
+}
+
+.chat-sidebar-role-item {
+  background: rgba(15, 23, 42, 0.85);
+  border-radius: 0.7rem;
+  padding: 0.45rem 0.6rem;
+  margin-bottom: 0.35rem;
+  font-size: 0.9rem;
+}
+.chat-sidebar-role-item .title {
+  font-weight: 600;
+}
+.chat-sidebar-role-item .status {
+  font-size: 0.8rem;
+  color: #e5e7eb;
+  opacity: 0.9;
+}
+
+.chat-sidebar-role-empty {
+  font-size: 0.85rem;
+  color: #64748b;
+}
+
+/* new chat button */
+.chat-sidebar-new-chat {
+  margin-top: 0.6rem;
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  border-radius: 999px;
+  border: none;
+  padding: 0.6rem 1rem;
+  background: linear-gradient(90deg, #14b8a6, #0ea5e9);
+  color: white;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+.chat-sidebar-new-chat .icon {
+  font-size: 1.1rem;
+}
+
+/* chat search */
+.chat-sidebar-search-row {
+  margin-top: 0.6rem;
+  display: flex;
+  align-items: center;
+  background: rgba(15, 23, 42, 0.85);
+  border-radius: 999px;
+  padding: 0.48rem 0.7rem;
+  border: 1px solid rgba(30, 64, 175, 0.7);
+}
+
+.search-icon {
+  margin-right: 0.4rem;
+  font-size: 0.9rem;
+}
+
+.chat-sidebar-search-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #e5e7eb;
+  font-size: 0.9rem;
+}
+
+/* chat list */
+.chats-label {
+  margin-top: 0.8rem;
+}
+
+.chat-sidebar-chat-list {
+  flex: 1;
+  overflow-y: auto;
+  margin-top: 0.3rem;
+}
+
+.chat-sidebar-chat-item {
+  background: rgba(15, 23, 42, 0.85);
+  border-radius: 0.8rem;
+  padding: 0.6rem 0.8rem;
+  margin-bottom: 0.4rem;
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+
+/* teacher search input */
+.chat-sidebar-student-search {
+  width: 100%;
+  padding: 0.45rem 0.6rem;
+  border-radius: 999px;
+  border: 1px solid rgba(148, 163, 184, 0.6);
+  background: rgba(15, 23, 42, 0.9);
+  color: #e5e7eb;
+  font-size: 0.85rem;
+  margin-bottom: 0.4rem;
+}
+.chat-sidebar-student-search::placeholder {
+  color: #64748b;
+}
+
+/* close button for mobile */
+.chat-sidebar-close {
+  display: none;
+  align-self: flex-end;
+  background: rgba(148, 163, 184, 0.35);
+  border: none;
+  color: white;
+  border-radius: 999px;
+  padding: 0.2rem 0.6rem;
+  margin-bottom: 0.25rem;
+}
+
+/* small scrollbars */
+.chat-sidebar-role-list::-webkit-scrollbar,
+.chat-sidebar-chat-list::-webkit-scrollbar {
+  width: 4px;
+}
+.chat-sidebar-role-list::-webkit-scrollbar-thumb,
+.chat-sidebar-chat-list::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.7);
+  border-radius: 999px;
+}
+
+/* DESKTOP: sidebar is just on the left */
+@media (min-width: 900px) {
+  .chat-sidebar {
+    position: relative;
+  }
+}
+
+/* MOBILE: sidebar slides in from left, hidden by default */
+@media (max-width: 899px) {
+  .chat-sidebar {
+    position: fixed;
+    top: 64px;
+    left: 0;
+    bottom: 0;
+    transform: translateX(-105%);
+    transition: transform 0.25s ease-out;
+  }
+
+  .chat-layout.sidebar-open .chat-sidebar {
+    transform: translateX(0);
+  }
+
+  .chat-sidebar-close {
+    display: inline-flex;
+  }
+}
+/* Show only ~2 items then scroll */
+.chat-sidebar-role-list.limited-height {
+  max-height: 120px; /* roughly 2 items */
+  overflow-y: auto;
+}
+
+/* clickable items */
+.chat-sidebar-role-item.clickable {
+  cursor: pointer;
+}
+
+/* teacher create assignment button */
+.chat-sidebar-create-assignment {
+  margin-top: 0.6rem;
+  width: 100%;
+  padding: 0.5rem 0.9rem;
+  border-radius: 999px;
+  border: 1px dashed rgba(148, 163, 184, 0.8);
+  background: transparent;
+  color: #e5e7eb;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+.chat-sidebar-create-assignment:hover {
+  background: rgba(148, 163, 184, 0.2);
+}

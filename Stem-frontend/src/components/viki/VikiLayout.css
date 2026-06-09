@@ -1,0 +1,17 @@
+.viki-layout {
+  display: flex;
+  height: 100vh;
+  background: #0b0f1f;
+  color: white;
+}
+
+.viki-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.viki-content {
+  padding: 15px;
+  overflow-y: auto;
+}

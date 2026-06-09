@@ -1,0 +1,31 @@
+.dropdown-menu {
+  position: absolute;
+  top: 55px;
+  right: 10px;
+  width: 170px;
+  background: rgba(15, 23, 42, 0.95);
+  border: 1px solid rgba(148, 163, 184, 0.25);
+  border-radius: 12px;
+  padding: 8px 0;
+  z-index: 9999;
+  backdrop-filter: blur(10px);
+}
+
+.dropdown-item {
+  width: 100%;
+  padding: 10px 14px;
+  background: transparent;
+  color: #f1f5f9;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.dropdown-item:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.logout {
+  color: #ff6b6b;
+}

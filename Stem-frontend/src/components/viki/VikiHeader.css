@@ -1,0 +1,14 @@
+.viki-header {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  border-bottom: 1px solid #1b2550;
+  background: #0e142c;
+}
+
+.logout-btn {
+  background: #6c5ce7;
+  border: 0;
+  color: white;
+  padding: 6px 10px;
+}

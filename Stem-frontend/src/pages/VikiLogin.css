@@ -1,0 +1,71 @@
+.viki-container {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: linear-gradient(
+    135deg,
+    #0b0f2a,
+    #101c44,
+    #162b6e
+  );
+}
+
+.viki-card {
+  width: 380px;
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.15);
+
+  padding: 25px;
+  border-radius: 12px;
+  text-align: center;
+}
+
+.viki-logo {
+  width: 150px;
+  margin-bottom: 10px;
+}
+
+.viki-title {
+  color: #cdd6ff;
+  margin-bottom: 15px;
+}
+
+.viki-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.viki-input {
+  padding: 10px;
+  border-radius: 6px;
+  border: none;
+  outline: none;
+}
+
+.viki-btn {
+  background: linear-gradient(45deg,#4e7bff,#7aa2ff);
+  border: none;
+  padding: 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.viki-btn:hover {
+  opacity: .9;
+}
+
+.viki-error {
+  color: #ff6b6b;
+  font-size: 13px;
+}
+
+.viki-note {
+  margin-top: 10px;
+  font-size: 12px;
+  color: #8fa1ff;
+}

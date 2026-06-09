@@ -1,0 +1,331 @@
+/* PAGE WRAPPER */
+.login-wrapper {
+  min-height: 100vh;
+  width: 100%;
+  background-image: url("/stemify-hero.jpg");
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* DARK OVERLAY */
+.login-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.clickable-logo {
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.clickable-logo:hover {
+  transform: scale(1.04);
+}
+
+/* CENTER SECTION + ANIMATION */
+.login-center {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  margin-top: 4rem;
+  max-width: 420px;
+  width: 100%;
+  padding: 1rem;
+}
+
+.login-animate {
+  animation: fadeSlide 0.9s ease;
+}
+
+@keyframes fadeSlide {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* LOGO */
+.login-logo {
+  width: 260px;
+  margin-bottom: 2rem;
+}
+
+/* CARD */
+.login-card {
+  width: 100%;
+  padding: 2rem;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(15px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+/* FLOATING LABEL GROUP */
+.input-group {
+  position: relative;
+  margin-bottom: 1.5rem;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 1rem 0.8rem;
+  font-size: 1rem;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.25);
+  border: none;
+  outline: none;
+  color: white;
+}
+
+/* FLOATING LABEL */
+.input-group label {
+  position: absolute;
+  top: 50%;
+  left: 14px;
+  transform: translateY(-50%);
+  color: #ddd;
+  font-size: 1rem;
+  pointer-events: none;
+  transition: 0.3s ease;
+}
+
+/* ACTIVE FLOAT */
+.input-group input:focus + label,
+.input-group input:valid + label {
+  top: 8px;
+  left: 12px;
+  font-size: 0.8rem;
+  color: #a8d8ff;
+}
+
+/* PASSWORD EYE ICON */
+.password-group {
+  position: relative;
+}
+
+.eye-icon {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  font-size: 1.2rem;
+}
+
+/* ERROR MESSAGE */
+.login-error {
+  margin: -5px 0 10px 0;
+  color: #ff7070;
+  font-size: 0.9rem;
+  text-align: left;
+}
+
+/* LOGIN BUTTON */
+.login-btn {
+  width: 100%;
+  padding: 1rem;
+  border-radius: 12px;
+  border: none;
+  background: linear-gradient(to right, #0066ff, #00b3ff);
+  color: white;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-bottom: 1rem;
+}
+
+/* SIGNUP TEXT */
+.signup-text {
+  color: #fff;
+}
+
+.signup-text a {
+  color: #38bdf8;
+}
+
+/* ========================= */
+/* ROBOT – DESKTOP POSITION  */
+/* ========================= */
+
+.login-robot {
+  position: absolute;
+  right: -400px;
+  bottom: 20px;
+  z-index: 1;
+  width: 420px; /* big robot */
+  pointer-events: none;
+}
+
+/* Floating container */
+.robot-float {
+  position: relative;
+  width: 100%;
+  height: auto;
+  animation: floatUpDown 3s ease-in-out infinite;
+  transform-origin: center bottom;
+}
+
+/* Core wrapper that receives state-based animations (turn, bow) */
+.robot-core {
+  position: relative;
+  width: 100%;
+  height: auto;
+  transform-origin: center bottom;
+}
+
+/* BODY */
+.robot-body {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* HEAD + EYES LAYER */
+.robot-head-wrapper {
+      position: absolute;
+    top: 5px;
+    right: 25px;
+    width: 400px;
+    transform-origin: center bottom;
+    z-index: 999999999999;
+}
+
+.robot-head-base {
+  width: 100%;
+  display: block;
+}
+
+/* closed eyes overlay – sits over the head */
+.robot-eyes-closed {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: auto;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.robot-eyes-closed.visible {
+  opacity: 1;
+}
+
+/* FLOATING UP/DOWN (always on) */
+@keyframes floatUpDown {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-18px);
+  }
+}
+
+/* ========================= */
+/* ROBOT REACTIONS           */
+/* ========================= */
+
+/* 1) WRONG CREDENTIALS – human-like head "nah" nod */
+.robot-core.error .robot-head-wrapper {
+  animation: robotHeadNo 0.6s ease-in-out;
+}
+
+@keyframes robotHeadNo {
+  0% {
+    transform: skewY(-45deg);
+    transform: rotate(3.0deg);
+  }
+  20% {
+    transform: skewY(-45deg);
+    transform: rotate(-3.0deg);
+  }
+  40% {
+    transform: skewY(-45deg);
+    transform: rotate(3.0deg);
+  }
+  60% {
+    transform: skewY(45deg);
+    transform: rotate(-3.0deg);
+  }
+  80% {
+    transform: skewY(-45deg);
+    transform: rotate(3.0deg);
+  }
+  100% {
+    transform: skewY(45deg);
+    transform: rotate(-3.0deg);
+  }
+}
+
+/* 2) SHOW PASSWORD – turn around, bow + left/right movement */
+
+/* Robot turns its back using a Y-rotation (keeps floating from parent) */
+.robot-core.passwordToggle {
+  animation: robotTurn 0.9s ease-in-out;
+}
+
+
+
+/* Head bows slightly while robot is turning */
+.robot-core.passwordToggle .robot-head-wrapper {
+  animation: robotBow 0.9s ease-in-out;
+}
+
+@keyframes robotBow {
+  0% {
+    transform: translateY(0) rotate(0deg);
+  }
+  30% {
+    transform: translateY(3px) rotate(4deg);
+  }
+  60% {
+    transform: translateY(2px) rotate(-3deg);
+  }
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+}
+
+/* FOOTER */
+.login-footer {
+  width: 100%;
+  text-align: center;
+  padding: 1rem;
+  margin-top: auto;
+  color: white;
+  background: rgba(0, 0, 0, 0.3);
+}
+
+/* MOBILE */
+@media (max-width: 480px) {
+  .login-logo {
+    width: 180px;
+  }
+
+  .login-card {
+    padding: 1.4rem;
+  }
+
+  .login-robot {
+    position: absolute;
+    bottom: -275px;
+    right: 100px;
+    z-index: 10 !important;
+    width: 220px;
+    height: auto;
+  }
+
+  .robot-head-wrapper {
+    top: 0px;
+    right: 10px;
+    width: 210px;
+  }
+}

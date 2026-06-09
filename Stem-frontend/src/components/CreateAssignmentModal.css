@@ -1,0 +1,106 @@
+.assign-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+}
+
+.assign-modal {
+  width: 90%;
+  max-width: 500px;
+  background: #0f172a;
+  padding: 20px;
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,0.15);
+  color: #fff;
+}
+
+.assign-modal h2 {
+  margin-bottom: 1rem;
+}
+
+.assign-modal input,
+.assign-modal textarea {
+  width: 100%;
+  padding: 10px;
+  background: rgba(255,255,255,0.1);
+  border: none;
+  border-radius: 8px;
+  color: white;
+  margin-bottom: 10px;
+}
+
+.assign-student-list {
+  max-height: 150px;
+  overflow-y: auto;
+  margin-bottom: 1rem;
+}
+
+.assign-student-item {
+  padding: 8px;
+  border-radius: 8px;
+  background: rgba(255,255,255,0.08);
+  margin-bottom: 5px;
+  cursor: pointer;
+}
+
+.assign-student-item.selected {
+  background: #2563eb;
+}
+
+.assign-btn {
+  width: 100%;
+  padding: 12px;
+  background: #2563eb;
+  border: none;
+  border-radius: 10px;
+  color: white;
+  margin-bottom: 10px;
+}
+
+.assign-close {
+  width: 100%;
+  padding: 10px;
+  border-radius: 10px;
+  background: rgba(255,255,255,0.1);
+  border: none;
+  color: white;
+}
+
+.assign-error {
+  color: #f87171;
+  margin: 10px 0;
+}
+/* Make title + date inputs match textarea styling */
+.create-assignment-modal input[type="text"],
+.create-assignment-modal input[type="date"] {
+  width: 100%;
+  border-radius: 12px;
+  border: 1px solid rgba(55, 65, 81, 0.9);
+  background: rgba(15, 23, 42, 0.9);
+  color: #e5e7eb;
+  padding: 0.65rem 0.75rem;
+  font-size: 0.95rem;
+}
+
+.create-assignment-modal input[type="text"]::placeholder,
+.create-assignment-modal input[type="date"]::placeholder {
+  color: rgba(148, 163, 184, 0.9);
+}
+.create-assignment-modal .form-group input,
+.create-assignment-modal .form-group textarea {
+  width: 100%;
+  padding: 0.7rem 0.8rem;
+  border-radius: 0.75rem;
+  border: 1px solid rgba(148, 163, 184, 0.7);
+  background: rgba(15, 23, 42, 0.95);
+  color: #e5e7eb;
+  font-size: 0.95rem;
+}
+
+.create-assignment-modal .form-group input[type="date"] {
+  color-scheme: dark;
+}

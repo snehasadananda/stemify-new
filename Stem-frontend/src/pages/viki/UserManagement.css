@@ -1,0 +1,25 @@
+.tbl {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.tbl th,
+.tbl td {
+  border: 1px solid #1b2550;
+  padding: 8px;
+}
+
+.tabs {
+  background: #0e142c;
+  border: 1px solid #1b2550;
+  padding: 12px;
+  border-radius: 8px;
+}
+
+.action .tabs {
+  margin-top: 6px;
+  padding: 6px 10px;
+  background: #6c5ce7;
+  border: 0;
+  color: #fff;
+}

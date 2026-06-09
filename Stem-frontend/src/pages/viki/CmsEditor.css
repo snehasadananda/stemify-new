@@ -1,0 +1,26 @@
+.cms-grid {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 10px;
+}
+
+.cms-list {
+  background: #0e142c;
+  border: 1px solid #1b2550;
+  padding: 8px;
+}
+
+.cms-item {
+  padding: 8px;
+  cursor: pointer;
+}
+
+.cms-item:hover {
+  background: #6c5ce7;
+}
+
+.cms-editor textarea {
+  width: 100%;
+  background: #0a0f1f;
+  color: white;
+}

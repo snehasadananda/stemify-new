@@ -1,0 +1,405 @@
+/* ================================
+   MAIN LAYOUT: SIDEBAR + CHAT
+=================================== */
+
+/* Whole chat screen */
+.chat-layout {
+  display: flex;
+  height: 100vh;              /* lock to viewport */
+  width: 100%;
+  background: radial-gradient(circle at top, #678da4 0%, #051724 55%, #020617 100%);
+  color: #f9fafb;
+  font-family: "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  overflow: hidden;            /* page itself never scrolls */
+}
+
+/* Right / main side (topbar + chat + footer) */
+.chat-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  min-height: 0;               /* IMPORTANT for internal scroll */
+}
+
+/* Content between Topbar and Footer */
+.chat-main-body {
+  flex: 1;
+  padding: 0 1.5rem;
+  display: flex;
+  align-items: stretch;
+  min-height: 0;               /* allows ChatBox to own the scroll */
+  overflow: hidden;            /* ChatBox (bubble panel) scrolls instead */
+}
+
+/* ================================
+   LOADING STATE
+=================================== */
+
+.chat-loading {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #020617;
+  color: #e5e7eb;
+  font-size: 1.2rem;
+}
+
+/* ================================
+   LOGIN OVERLAY (when no user)
+=================================== */
+
+.chat-login-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+}
+
+.chat-login-card {
+  background: rgba(15, 23, 42, 0.98);
+  border-radius: 24px;
+  padding: 2rem 2.5rem;
+  border: 1px solid rgba(148, 163, 184, 0.7);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.8);
+  max-width: 420px;
+  text-align: center;
+}
+
+.chat-login-card h2 {
+  margin-bottom: 0.5rem;
+}
+
+.chat-login-card p {
+  color: #cbd5f5;
+  margin-bottom: 1.4rem;
+}
+
+.chat-login-buttons {
+  display: flex;
+  gap: 0.8rem;
+  justify-content: center;
+}
+
+.chat-login-btn {
+  border-radius: 999px;
+  padding: 0.6rem 1.3rem;
+  text-decoration: none;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.chat-login-btn.primary {
+  background: linear-gradient(to right, #2563eb, #0ea5e9);
+  color: white;
+}
+
+.chat-login-btn.secondary {
+  border: 1px solid rgba(148, 163, 184, 0.8);
+  color: #e5e7eb;
+  background: transparent;
+}
+
+/* Make sure the main Footer (from Footer.jsx) sits at the bottom */
+.chat-main > footer {
+  margin-top: auto;
+}
+
+/* ================================
+   GENERIC MODAL STYLES
+   (Student details, assignments, etc.)
+=================================== */
+
+.chat-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 60;
+}
+
+.chat-modal-card {
+  background: rgba(15, 23, 42, 0.98);
+  border-radius: 24px;
+  padding: 1.5rem 1.8rem;
+  border: 1px solid rgba(148, 163, 184, 0.7);
+  max-width: 800px;
+  width: 80vw;
+  max-height: 80vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.chat-modal-card.large {
+  max-width: 900px;
+}
+
+.chat-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.chat-modal-close {
+  border: none;
+  background: rgba(148, 163, 184, 0.25);
+  color: #e5e7eb;
+  border-radius: 999px;
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+}
+
+.chat-modal-tabs {
+  display: flex;
+  gap: 0.6rem;
+  margin-bottom: 0.8rem;
+}
+
+.chat-modal-tabs button {
+  padding: 0.35rem 0.9rem;
+  border-radius: 999px;
+  border: 1px solid rgba(148, 163, 184, 0.7);
+  background: transparent;
+  color: #e5e7eb;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+
+.chat-modal-tabs button.active {
+  background: linear-gradient(90deg, #2563eb, #0ea5e9);
+  border-color: transparent;
+  color: white;
+}
+
+.chat-modal-body {
+  flex: 1;
+  overflow-y: auto;
+  padding-right: 0.5rem;
+}
+
+.chat-modal-section-title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin-bottom: 0.4rem;
+}
+
+.chat-modal-section-subtitle {
+  font-size: 0.85rem;
+  opacity: 0.8;
+  margin-bottom: 0.6rem;
+}
+
+.chat-modal-list {
+  border-radius: 0.75rem;
+  border: 1px solid rgba(55, 65, 81, 0.8);
+  padding: 0.4rem 0.6rem;
+  margin-bottom: 0.8rem;
+}
+
+.chat-modal-list-item {
+  padding: 0.4rem 0.5rem;
+  border-radius: 0.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.9rem;
+}
+
+.chat-modal-list-item:nth-child(odd) {
+  background: rgba(15, 23, 42, 0.7);
+}
+
+.chat-modal-list-item:nth-child(even) {
+  background: rgba(15, 23, 42, 0.55);
+}
+
+.chat-modal-student-list {
+  max-height: 150px;
+  overflow-y: auto;
+  border-radius: 0.7rem;
+  border: 1px solid rgba(55, 65, 81, 0.8);
+  padding: 0.4rem 0.6rem;
+}
+
+.student-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  margin-bottom: 0.25rem;
+}
+
+.assignment-question {
+  padding: 0.6rem 0.7rem;
+  border-radius: 0.6rem;
+  background: rgba(15, 23, 42, 0.85);
+}
+
+.chat-modal-footer {
+  margin-top: 0.7rem;
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.6rem;
+}
+
+.chat-modal-primary-btn,
+.chat-modal-secondary-btn {
+  border-radius: 999px;
+  padding: 0.5rem 1.2rem;
+  border: none;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.chat-modal-primary-btn {
+  background: linear-gradient(90deg, #2563eb, #0ea5e9);
+  color: white;
+}
+
+.chat-modal-secondary-btn {
+  background: transparent;
+  border: 1px solid rgba(148, 163, 184, 0.8);
+  color: #e5e7eb;
+}
+
+.chat-modal-error {
+  color: #f87171;
+  font-size: 0.85rem;
+  margin-top: 0.3rem;
+}
+
+/* ================================
+   RESPONSIVE
+=================================== */
+
+@media (max-width: 899px) {
+  .chat-layout {
+    flex-direction: column;
+  }
+
+  .chat-main-body {
+    padding: 0 1rem;
+  }
+}
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin-bottom: 0.9rem;
+}
+
+.form-group label {
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.form-group textarea,
+.form-group input[type="file"] {
+  border-radius: 0.6rem;
+  border: 1px solid rgba(55, 65, 81, 0.9);
+  background: rgba(15, 23, 42, 0.9);
+  color: #e5e7eb;
+  padding: 0.65rem 0.75rem;
+  font-size: 0.95rem;
+}
+/* ---------- STANDARD SCROLLBARS (chat, modals, textareas) ---------- */
+
+.standard-scroll,
+.chat-bubble-panel,
+.chat-sidebar-chat-list,
+.chat-sidebar-role-list,
+.chat-modal-body,
+.assign-student-list,
+.chat-modal-student-list,
+.assignment-answer-textarea,
+.chat-transcript-body {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(148, 163, 184, 0.9) transparent;
+}
+
+/* WebKit (Chrome / Edge / Safari) */
+.standard-scroll::-webkit-scrollbar,
+.chat-bubble-panel::-webkit-scrollbar,
+.chat-sidebar-chat-list::-webkit-scrollbar,
+.chat-sidebar-role-list::-webkit-scrollbar,
+.assign-student-list::-webkit-scrollbar,
+.chat-modal-student-list::-webkit-scrollbar,
+.assignment-answer-textarea::-webkit-scrollbar,
+.chat-transcript-body::-webkit-scrollbar {
+  width: 8px;
+}
+
+.standard-scroll::-webkit-scrollbar-track,
+.chat-bubble-panel::-webkit-scrollbar-track,
+.chat-sidebar-chat-list::-webkit-scrollbar-track,
+.chat-sidebar-role-list::-webkit-scrollbar-track,
+.assign-student-list::-webkit-scrollbar-track,
+.chat-modal-student-list::-webkit-scrollbar-track,
+.assignment-answer-textarea::-webkit-scrollbar-track,
+.chat-transcript-body::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.standard-scroll::-webkit-scrollbar-thumb,
+.chat-bubble-panel::-webkit-scrollbar-thumb,
+.chat-sidebar-chat-list::-webkit-scrollbar-thumb,
+.chat-sidebar-role-list::-webkit-scrollbar-thumb,
+.assign-student-list::-webkit-scrollbar-thumb,
+.chat-modal-student-list::-webkit-scrollbar-thumb,
+.assignment-answer-textarea::-webkit-scrollbar-thumb,
+.chat-transcript-body::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.8);
+  border-radius: 999px;
+}
+/* Chat transcript inside StudentDetailModal */
+.chat-transcript-body {
+  max-height: 60vh;
+}
+
+.chat-transcript-row {
+  display: flex;
+  margin-bottom: 0.7rem;
+}
+
+.chat-transcript-row.from-student {
+  justify-content: flex-end;
+}
+
+.chat-transcript-row.from-others {
+  justify-content: flex-start;
+}
+
+.chat-transcript-bubble {
+  max-width: 70%;
+  padding: 0.7rem 0.9rem;
+  border-radius: 18px;
+  background: rgba(15, 23, 42, 0.9);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.45);
+}
+
+.chat-transcript-row.from-student .chat-transcript-bubble {
+  background: linear-gradient(90deg, #2563eb, #0ea5e9);
+}
+
+.chat-transcript-meta {
+  font-size: 0.72rem;
+  opacity: 0.8;
+  margin-bottom: 0.25rem;
+}
+
+.chat-transcript-text {
+  font-size: 0.9rem;
+  white-space: pre-wrap;
+}
+.chat-modal-item.clickable {
+  cursor: pointer;
+}

@@ -1,0 +1,20 @@
+/* src/components/Footer.css */
+
+.main-footer {
+  width: 100%;
+  text-align: center;
+  padding: 1rem;
+  font-size: 0.9rem;
+  background: #0f172a;                 /* same dark bar as home */
+  border-top: 1px solid #1e3a8a;
+  color: #e5e7eb;
+}
+
+.main-footer a {
+  color: #38bdf8;
+  text-decoration: none;
+}
+
+.main-footer a:hover {
+  text-decoration: underline;
+}
