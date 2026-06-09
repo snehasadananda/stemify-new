@@ -22,3 +22,20 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+# Frontend
+frontend/node_modules/
+
+# Backend
+backend/node_modules/
+
+# Environment files
+.env
+backend/.env
+frontend/.env
+
+# Logs
+*.log
+
+# Build files
+frontend/build/
+frontend/dist/
