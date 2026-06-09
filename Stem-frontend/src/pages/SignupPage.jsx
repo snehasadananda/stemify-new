@@ -51,6 +51,7 @@ function SignupPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           email,
+          username: email,
           password: pass,
           confirmPassword: confirmPass,
           role,
@@ -58,18 +59,37 @@ function SignupPage() {
         }),
       });
 
-      const data = await res.json();
+      const contentType = res.headers.get("content-type") || "";
+      let data = {};
+
+      if (contentType.includes("application/json")) {
+        data = await res.json();
+      } else {
+        const responseText = await res.text();
+        data = { message: responseText };
+      }
 
       if (!res.ok) {
-        setError(data.error || "Signup failed");
+        if (res.status === 404) {
+          setError("Signup endpoint is missing on the backend. /api/auth/register is not implemented.");
+        } else {
+          setError(data.error || data.message || `Signup failed (${res.status})`);
+        }
         setLoading(false);
         return;
+      }
+
+      const responseData = data.data ?? data;
+
+      if (responseData.debugOtp) {
+        setOtp(responseData.debugOtp);
+        setError("SMTP is not configured on the backend. Using the OTP generated in development mode.");
       }
 
       setOtpModal(true);
     } catch (err) {
       console.error("Signup error:", err);
-      setError("Something went wrong. Try again.");
+      setError("Could not reach the signup API. Check the backend and try again.");
     }
 
     setLoading(false);
@@ -88,21 +108,22 @@ function SignupPage() {
       const res = await fetch(`${API_BASE_URL}/auth/verify-otp`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, otp }),
+        body: JSON.stringify({ email, username: email, otp }),
       });
 
       const data = await res.json();
+      const payload = data.data ?? data;
 
       if (!res.ok) {
-        setError(data.error || "OTP verification failed");
+        setError(data.message || data.error || "OTP verification failed");
         setOtpLoading(false);
         return;
       }
 
-      localStorage.setItem("stemify_token", data.token);
-      localStorage.setItem("stemify_user", JSON.stringify(data.user));
+      localStorage.setItem("stemify_token", payload.token);
+      localStorage.setItem("stemify_user", JSON.stringify(payload.user));
 
-      navigate(data.redirectPath || "/chat");
+      navigate(payload.redirectPath || "/chat");
     } catch (err) {
       console.error("OTP error:", err);
       setError("Something went wrong. Try again.");

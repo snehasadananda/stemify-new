@@ -1,9 +1,172 @@
 import jwt from "jsonwebtoken";
+import bcrypt from "bcryptjs";
 import { db } from "../config/db.js";
 import { jwtConfig } from "../config/jwt.js";
 import { comparePassword } from "../utils/hash.js";
 import { success, error } from "../utils/response.js";
 import requestIp from "request-ip";
+import {
+  createSignupChallenge,
+  sendSignupOtpEmail,
+  verifySignupOtp
+} from "../services/signup.service.js";
+
+const allowedSignupRoles = ["STUDENT", "TEACHER", "PARENT"];
+
+const normalizeSignupIdentifier = (value) => value.trim().toLowerCase();
+
+const isPhoneLike = (value) => /^[0-9+\-()\s]{7,}$/.test(value);
+
+const buildAuthToken = (user) =>
+  jwt.sign(
+    {
+      userId: user.id,
+      role: user.role,
+      schoolId: user.school_id || null
+    },
+    jwtConfig.secret,
+    { expiresIn: jwtConfig.expiresIn }
+  );
+
+export const register = async (req, res) => {
+  try {
+    const { email, username, password, confirmPassword, role, schoolCode } = req.body;
+
+    const identifier = normalizeSignupIdentifier(username || email || "");
+
+    if (!identifier || !password || !confirmPassword || !role) {
+      return error(res, "Email/phone, password, confirm password and role are required");
+    }
+
+    if (password !== confirmPassword) {
+      return error(res, "Passwords do not match");
+    }
+
+    const normalizedRole = String(role).trim().toUpperCase();
+
+    if (!allowedSignupRoles.includes(normalizedRole)) {
+      return error(res, "Invalid signup role");
+    }
+
+    const [existingUsers] = await db.query(
+      "SELECT id FROM users WHERE username = ? AND is_deleted = 0",
+      [identifier]
+    );
+
+    if (existingUsers.length > 0) {
+      return error(res, "User already exists");
+    }
+
+    let schoolId = null;
+
+    if (schoolCode) {
+      const normalizedSchoolCode = String(schoolCode).trim().toUpperCase();
+
+      const [schoolRows] = await db.query(
+        "SELECT id FROM schools WHERE school_code = ? LIMIT 1",
+        [normalizedSchoolCode]
+      );
+
+      if (schoolRows.length === 0) {
+        return error(res, "Invalid school code");
+      }
+
+      schoolId = schoolRows[0].id;
+    }
+
+    const passwordHash = await bcrypt.hash(password, 10);
+    const { otp, identifier: signupKey } = await createSignupChallenge({
+      identifier,
+      passwordHash,
+      role: normalizedRole,
+      schoolId,
+      name: identifier,
+      phone: isPhoneLike(identifier) ? identifier : null
+    });
+
+    const mailResult = await sendSignupOtpEmail({ to: identifier, otp });
+
+    return success(res, "OTP sent successfully", {
+      identifier: signupKey,
+      ...(mailResult.delivered ? {} : { debugOtp: otp })
+    });
+  } catch (err) {
+    console.error(err);
+    return error(res, "Server error", 500);
+  }
+};
+
+export const verifyOtp = async (req, res) => {
+  try {
+    const { email, username, otp } = req.body;
+    const identifier = normalizeSignupIdentifier(username || email || "");
+
+    if (!identifier || !otp) {
+      return error(res, "Email/phone and OTP are required");
+    }
+
+    const verification = await verifySignupOtp(identifier, otp);
+
+    if (!verification.ok) {
+      if (verification.reason === "expired") {
+        return error(res, "OTP expired. Please sign up again.", 400);
+      }
+
+      return error(res, "Invalid OTP", 400);
+    }
+
+    const { role, schoolId, passwordHash, name, phone } = verification.entry;
+
+    const [[roleRow]] = await db.query(
+      "SELECT id, name FROM roles WHERE name = ? LIMIT 1",
+      [role]
+    );
+
+    if (!roleRow) {
+      return error(res, "Role not configured", 400);
+    }
+
+    const [existingUsers] = await db.query(
+      "SELECT id FROM users WHERE username = ? AND is_deleted = 0",
+      [identifier]
+    );
+
+    if (existingUsers.length > 0) {
+      return error(res, "User already exists", 400);
+    }
+
+    const [insertResult] = await db.query(
+      `INSERT INTO users (role_id, name, username, phone, password, school_id)
+       VALUES (?, ?, ?, ?, ?, ?)`,
+      [roleRow.id, name, identifier, phone, passwordHash, schoolId]
+    );
+
+    const [userRows] = await db.query(
+      `SELECT u.id, u.school_id, r.name AS role
+       FROM users u
+       JOIN roles r ON r.id = u.role_id
+       WHERE u.id = ?`,
+      [insertResult.insertId]
+    );
+
+    const user = userRows[0];
+    const token = buildAuthToken(user);
+
+    return success(res, "Signup completed", {
+      token,
+      user: {
+        id: user.id,
+        role: user.role.toLowerCase(),
+        schoolId: user.school_id || null,
+        username: identifier
+      },
+      redirectPath: "/chat"
+    });
+  } catch (err) {
+    console.error(err);
+    return error(res, "Server error", 500);
+  }
+};
 
 export const login = async (req, res) => {
   try {
@@ -71,15 +234,7 @@ export const login = async (req, res) => {
     }
 
     // ---- CREATE TOKEN ----
-    const token = jwt.sign(
-      {
-        userId: user.id,
-        role: user.role,
-        schoolId: user.school_id || null
-      },
-      jwtConfig.secret,
-      { expiresIn: jwtConfig.expiresIn }
-    );
+    const token = buildAuthToken(user);
 
     return success(res, "Login successful", {
       token,
