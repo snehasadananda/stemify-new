@@ -33,54 +33,60 @@ function LoginPage() {
   };
 
   const handleLogin = async () => {
-    setError("");
-    setLoading(true);
+  setError("");
+  setLoading(true);
 
-    if (!email || !pass) {
-      setError("Please enter both email/phone and password.");
+  if (!email || !pass) {
+    setError("Please enter both email/phone and password.");
+    triggerRobotError();
+    setLoading(false);
+    return;
+  }
+
+  try {
+    const res = await fetch(`${API_BASE_URL}/auth/login`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        emailOrPhone: email.trim(),
+        username: email.trim(),
+        password: pass.trim(),
+      }),
+    });
+
+    const data = await res.json();
+
+    // DEBUG LOG — check this in console
+    console.log("FULL LOGIN RESPONSE:", JSON.stringify(data));
+
+    if (!res.ok || data.success === false) {
+      setError(data.error || data.message || "Login failed.");
       triggerRobotError();
       setLoading(false);
       return;
     }
 
-    try {
-      const res = await fetch(`${API_BASE_URL}/auth/login`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          username: email.trim(),
-          password: pass.trim(),
-        }),
-      });
+    // Your backend returns: { success: true, data: { token, role } }
+    const token = data.token ?? data.data?.token;
+    const userObj = data.user ?? data.data;
 
-      const data = await res.json();
-      console.log("LOGIN RESPONSE:", data);
+    if (!token) {
+      setError("Login failed: no token received. Check console.");
+      triggerRobotError();
+      setLoading(false);
+      return;
+    }
 
-      if (!res.ok || data.success === false) {
-        setError(data.error || data.message || "Login failed.");
-        triggerRobotError();
-        setLoading(false);
-        return;
-      }
-      const token = data.token ?? data.data?.token;
-      const userObj= data.user ?? data.data;
+    // Normalize role to lowercase so ChatPage comparisons work
+    const normalizedUser = {
+      ...userObj,
+      role: (userObj?.role || "student").toLowerCase(),
+    };
 
-      if (!token){
-        setError("login failed:no token received. check console,");
-        triggerRobotError();
-        setLoading(false);
-        return;
-      }
+    localStorage.setItem("stemify_token", token);
+    localStorage.setItem("stemify_user", JSON.stringify(normalizedUser));
 
-      const normalizedUser = {
-        ...userObj,
-        role: (userObj?.role || "student").toLowerCase(),
-      };
-
-      localStorage.setItem("stemify_token", token);
-      localStorage.setItem("stemify_user", JSON.stringify(normalizedUser));
-
-          const role = normalizedUser.role;
+    const role = normalizedUser.role;
     const redirect =
       data.redirectPath ||
       (role === "teacher" ? "/chat/teacher" :
@@ -97,7 +103,6 @@ function LoginPage() {
     setLoading(false);
   }
 };
-
   
 
   const handleTogglePassword = () => {
