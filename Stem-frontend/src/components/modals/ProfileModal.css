@@ -25,6 +25,7 @@
   top: 12px;
   right: 12px;
   font-size: 18px;
+  color:#ff4e4e;
   background: transparent;
   border: none;
   cursor: pointer;
@@ -52,11 +53,19 @@
 
 .form-section input {
   width: 100%;
+  margin-top: 10px;
   padding: 12px;
   border-radius: 10px;
   background: #0a2237;
   color: #fff;
   border: 1px solid #103d61;
+}
+
+.password-message {
+  margin-top: 10px;
+  color: #d7e6ff;
+  font-size: 14px;
+  line-height: 1.4;
 }
 
 .saveBtn {
@@ -67,6 +76,11 @@
   color: #fff;
   border-radius: 10px;
   cursor: pointer;
+}
+
+.saveBtn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
 }
 
 .logout-text {

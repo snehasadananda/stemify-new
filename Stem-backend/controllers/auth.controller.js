@@ -246,3 +246,40 @@ export const login = async (req, res) => {
     return error(res, "Server error", 500);
   }
 };
+
+export const changePassword = async (req, res) => {
+  try {
+    const { currentPassword, newPassword } = req.body;
+
+    if (!currentPassword || !newPassword) {
+      return error(res, "Current password and new password are required");
+    }
+
+    const [[user]] = await db.query(
+      "SELECT id, password FROM users WHERE id = ? AND is_deleted = 0 LIMIT 1",
+      [req.user.userId]
+    );
+
+    if (!user) {
+      return error(res, "User not found", 404);
+    }
+
+    const isMatch = await comparePassword(currentPassword, user.password);
+
+    if (!isMatch) {
+      return error(res, "Current password is incorrect", 400);
+    }
+
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+    await db.query(
+      "UPDATE users SET password = ? WHERE id = ?",
+      [hashedPassword, user.id]
+    );
+
+    return success(res, "Password updated successfully");
+  } catch (err) {
+    console.error(err);
+    return error(res, "Server error", 500);
+  }
+};
